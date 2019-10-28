@@ -43,8 +43,10 @@ dependencies {
 
 ## Configuration
 Configuration example can be found [here](https://github.com/MrIvanPlays/api.mrivanplays.com/blob/master/src/main/resources/yalif.json)
+
 Format placeholders: `%loggerName` - logger name ; `%level` - level name ; `%msg` - message 
 Not required things in the configuration: 
+
 `logFileDirectory` - log files won't be generated if this isn't present ; 
 `timeDateFormat` - if you have a time date format into your logging format, then it won't be replaced if this isn't present ; 
 `disabledLevels` - all logging levels are being allowed if this isn't present
