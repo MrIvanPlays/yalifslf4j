@@ -43,7 +43,8 @@ public class YalifLogFormat {
         format
             .replace("%level", level.name())
             .replace("%msg", message)
-            .replace("%loggerName", loggerName);
+            .replace("%loggerName", loggerName)
+            .replace("%n", "");
     if (dateTimeFormat != null) {
       replacements =
           replacements.replace(
@@ -58,6 +59,7 @@ public class YalifLogFormat {
             .replace("%level", level.name())
             .replace("%msg", message)
             .replace("%loggerName", loggerName)
+            .replace("%n", "")
         + "\n"
         + exception(error);
   }

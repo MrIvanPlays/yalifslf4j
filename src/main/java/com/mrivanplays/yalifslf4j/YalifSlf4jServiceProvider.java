@@ -20,23 +20,24 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
-package org.slf4j.impl;
+package com.mrivanplays.yalifslf4j;
 
+import org.slf4j.ILoggerFactory;
 import org.slf4j.IMarkerFactory;
 import org.slf4j.helpers.BasicMarkerFactory;
-import org.slf4j.spi.MarkerFactoryBinder;
+import org.slf4j.helpers.NOPMDCAdapter;
+import org.slf4j.spi.MDCAdapter;
+import org.slf4j.spi.SLF4JServiceProvider;
 
-public class StaticMarkerBinder implements MarkerFactoryBinder {
+public class YalifSlf4jServiceProvider implements SLF4JServiceProvider {
 
-  /** The unique instance of this class. */
-  public static final StaticMarkerBinder SINGLETON = new StaticMarkerBinder();
+  private ILoggerFactory loggerFactory;
+  private IMarkerFactory markerFactory;
+  private MDCAdapter mdcAdapter;
 
-  private final IMarkerFactory markerFactory = new BasicMarkerFactory();
-
-  private StaticMarkerBinder() {}
-
-  public static StaticMarkerBinder getSingleton() {
-    return SINGLETON;
+  @Override
+  public ILoggerFactory getLoggerFactory() {
+    return loggerFactory;
   }
 
   @Override
@@ -45,7 +46,19 @@ public class StaticMarkerBinder implements MarkerFactoryBinder {
   }
 
   @Override
-  public String getMarkerFactoryClassStr() {
-    return BasicMarkerFactory.class.getName();
+  public MDCAdapter getMDCAdapter() {
+    return mdcAdapter;
+  }
+
+  @Override
+  public String getRequesteApiVersion() {
+    return null;
+  }
+
+  @Override
+  public void initialize() {
+    loggerFactory = new YalifSlf4jLoggerFactory();
+    markerFactory = new BasicMarkerFactory();
+    mdcAdapter = new NOPMDCAdapter();
   }
 }
