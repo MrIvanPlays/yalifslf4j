@@ -20,12 +20,23 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE.
 */
-package com.mrivanplays.yalifslf4j.config;
+package com.mrivanplays.yaslif4j;
 
-public class YalifLogFormat extends YalifLogFormatBase {
+import com.mrivanplays.yalifslf4j.YalifSlf4jLoggerFactory;
+import com.mrivanplays.yalifslf4j.config.YalifLogFormatBase;
+import org.junit.Assert;
+import org.junit.Test;
+import org.slf4j.Logger;
 
-  public YalifLogFormat(YalifLogFormatBase base, String name) {
-    super(base.format, base.dateTimeFormat);
-    this.loggerName = name;
+public class LoggingTest {
+
+  @Test
+  public void log() {
+    YalifSlf4jLoggerFactory factory =
+        new YalifSlf4jLoggerFactory(new YalifLogFormatBase("[%level] %msg", ""));
+    Logger logger = factory.getLogger("TestLog");
+    logger.info("Hello, world");
+
+    Assert.assertFalse(false);
   }
 }

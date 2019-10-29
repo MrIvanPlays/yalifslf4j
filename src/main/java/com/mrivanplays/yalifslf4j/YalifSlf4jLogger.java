@@ -23,7 +23,6 @@
 package com.mrivanplays.yalifslf4j;
 
 import com.mrivanplays.yalifslf4j.config.YalifLogFormat;
-import com.mrivanplays.yalifslf4j.config.YalifSlf4jConfig;
 import java.util.List;
 import org.slf4j.event.Level;
 import org.slf4j.helpers.FormattingTuple;
@@ -35,13 +34,9 @@ public class YalifSlf4jLogger extends MarkerIgnoringBase {
   private List<Level> disabledLevels;
   private YalifLogFormat logFormatFormatter;
 
-  public YalifSlf4jLogger(String name, YalifSlf4jConfig config) {
-    if (config.getLoggingFormat() == null) {
-      throw new IllegalArgumentException("Logging format cannot be null");
-    }
-    logFormatFormatter =
-        new YalifLogFormat(config.getLoggingFormat(), config.getTimeDateFormat(), name);
-    disabledLevels = config.getDisabledLevels();
+  public YalifSlf4jLogger(YalifLogFormat format, List<Level> disabledLevels) {
+    logFormatFormatter = format;
+    this.disabledLevels = disabledLevels;
   }
 
   private boolean isDisabled(Level level) {

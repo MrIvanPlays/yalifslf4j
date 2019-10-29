@@ -22,20 +22,25 @@
 */
 package com.mrivanplays.yalifslf4j;
 
+import com.mrivanplays.yalifslf4j.config.YalifLogFormat;
+import com.mrivanplays.yalifslf4j.config.YalifLogFormatBase;
 import com.mrivanplays.yalifslf4j.config.YalifSlf4jConfig;
 import java.io.File;
 import java.io.InputStream;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.event.Level;
 
 public class YalifSlf4jLoggerFactory implements ILoggerFactory {
 
   private Map<String, Logger> loggerMap;
-  private YalifSlf4jConfig config;
+  private YalifLogFormatBase logFormat;
+  private List<Level> disabledLevels;
 
   public YalifSlf4jLoggerFactory() {
     loggerMap = new ConcurrentHashMap<>();
@@ -53,7 +58,7 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
     if (configStream == null) {
       throw new IllegalArgumentException("Config file cannot be found inside jar");
     }
-    config = new YalifSlf4jConfig(configStream);
+    YalifSlf4jConfig config = new YalifSlf4jConfig(configStream);
     if (config.getFileLoggingDirectory() != null) {
       File fileLoggingDirectory = new File(config.getFileLoggingDirectory());
       fileLoggingDirectory.mkdirs();
@@ -63,6 +68,17 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
       }
       YalifSlf4jLogFile.init(fileLoggingDirectory);
     }
+    if (config.getLoggingFormat() == null) {
+      throw new IllegalArgumentException("Logging format cannot be null");
+    }
+    logFormat = new YalifLogFormatBase(config.getLoggingFormat(), config.getTimeDateFormat());
+    disabledLevels = config.getDisabledLevels();
+  }
+
+  public YalifSlf4jLoggerFactory(YalifLogFormatBase logFormat) { // testing purposes
+    loggerMap = new ConcurrentHashMap<>();
+    this.logFormat = logFormat;
+    this.disabledLevels = null;
   }
 
   @Override
@@ -71,7 +87,7 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
     if (logger != null) {
       return logger;
     } else {
-      Logger newInstance = new YalifSlf4jLogger(s, config);
+      Logger newInstance = new YalifSlf4jLogger(new YalifLogFormat(logFormat, s), disabledLevels);
       Logger oldInstance = loggerMap.putIfAbsent(s, newInstance);
       return oldInstance == null ? newInstance : oldInstance;
     }

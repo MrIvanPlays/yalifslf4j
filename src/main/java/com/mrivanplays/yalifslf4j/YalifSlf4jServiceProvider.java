@@ -52,7 +52,7 @@ public class YalifSlf4jServiceProvider implements SLF4JServiceProvider {
 
   @Override
   public String getRequesteApiVersion() {
-    return null;
+    return "1.7.28";
   }
 
   @Override
