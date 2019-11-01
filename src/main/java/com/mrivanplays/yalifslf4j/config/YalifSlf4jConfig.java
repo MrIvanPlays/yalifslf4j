@@ -26,7 +26,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.json.JSONArray;
@@ -38,7 +38,7 @@ public class YalifSlf4jConfig {
   private String loggingFormat;
   private String fileLoggingDirectory;
   private String timeDateFormat;
-  private List<Level> disabledLevels;
+  private EnumSet<Level> disabledLevels;
 
   public YalifSlf4jConfig(InputStream in) {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
@@ -60,7 +60,7 @@ public class YalifSlf4jConfig {
       timeDateFormat = object.getString("timeDateFormat");
       JSONArray disabledLevelsArray = object.getJSONArray("disabledLevels");
       if (disabledLevelsArray != null) {
-        disabledLevels = new ArrayList<>();
+        disabledLevels = EnumSet.noneOf(Level.class);
         for (int i = 0; i < disabledLevelsArray.length(); i++) {
           String level = disabledLevelsArray.getString(i);
           try {
@@ -87,7 +87,7 @@ public class YalifSlf4jConfig {
     return timeDateFormat;
   }
 
-  public List<Level> getDisabledLevels() {
+  public EnumSet<Level> getDisabledLevels() {
     return disabledLevels;
   }
 }

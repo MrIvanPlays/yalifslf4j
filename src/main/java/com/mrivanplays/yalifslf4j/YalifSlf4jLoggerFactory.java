@@ -29,7 +29,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.List;
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.ILoggerFactory;
@@ -40,7 +40,7 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
 
   private Map<String, Logger> loggerMap;
   private YalifLogFormatBase logFormat;
-  private List<Level> disabledLevels;
+  private EnumSet<Level> disabledLevels;
 
   public YalifSlf4jLoggerFactory() {
     loggerMap = new ConcurrentHashMap<>();
@@ -87,7 +87,8 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
     if (logger != null) {
       return logger;
     } else {
-      Logger newInstance = new YalifSlf4jLogger(new YalifLogFormat(logFormat, s), disabledLevels);
+      Logger newInstance =
+          new YalifSlf4jLogger(s, new YalifLogFormat(logFormat, s), disabledLevels);
       Logger oldInstance = loggerMap.putIfAbsent(s, newInstance);
       return oldInstance == null ? newInstance : oldInstance;
     }

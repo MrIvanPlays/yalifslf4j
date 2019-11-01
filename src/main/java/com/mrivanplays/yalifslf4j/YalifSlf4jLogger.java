@@ -23,20 +23,24 @@
 package com.mrivanplays.yalifslf4j;
 
 import com.mrivanplays.yalifslf4j.config.YalifLogFormat;
-import java.util.List;
+import java.util.EnumSet;
+import org.slf4j.Logger;
+import org.slf4j.Marker;
 import org.slf4j.event.Level;
 import org.slf4j.helpers.FormattingTuple;
-import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
-public class YalifSlf4jLogger extends MarkerIgnoringBase {
+// we're ignoring markers cuz they're stupid
+public class YalifSlf4jLogger implements Logger {
 
-  private List<Level> disabledLevels;
+  private EnumSet<Level> disabledLevels;
   private YalifLogFormat logFormatFormatter;
+  private String name;
 
-  public YalifSlf4jLogger(YalifLogFormat format, List<Level> disabledLevels) {
+  public YalifSlf4jLogger(String name, YalifLogFormat format, EnumSet<Level> disabledLevels) {
     logFormatFormatter = format;
     this.disabledLevels = disabledLevels;
+    this.name = name;
   }
 
   private boolean isDisabled(Level level) {
@@ -63,6 +67,11 @@ public class YalifSlf4jLogger extends MarkerIgnoringBase {
       System.out.println(format);
       YalifSlf4jLogFile.add(format);
     }
+  }
+
+  @Override
+  public String getName() {
+    return name;
   }
 
   @Override
@@ -96,6 +105,36 @@ public class YalifSlf4jLogger extends MarkerIgnoringBase {
   }
 
   @Override
+  public boolean isTraceEnabled(Marker marker) {
+    return isTraceEnabled();
+  }
+
+  @Override
+  public void trace(Marker marker, String msg) {
+    trace(msg);
+  }
+
+  @Override
+  public void trace(Marker marker, String format, Object arg) {
+    trace(format, arg);
+  }
+
+  @Override
+  public void trace(Marker marker, String format, Object arg1, Object arg2) {
+    trace(format, arg1, arg2);
+  }
+
+  @Override
+  public void trace(Marker marker, String format, Object... argArray) {
+    trace(format, argArray);
+  }
+
+  @Override
+  public void trace(Marker marker, String msg, Throwable t) {
+    trace(msg, t);
+  }
+
+  @Override
   public boolean isDebugEnabled() {
     return !isDisabled(Level.DEBUG);
   }
@@ -123,6 +162,36 @@ public class YalifSlf4jLogger extends MarkerIgnoringBase {
   @Override
   public void debug(String s, Throwable throwable) {
     log(Level.DEBUG, s, throwable);
+  }
+
+  @Override
+  public boolean isDebugEnabled(Marker marker) {
+    return isDebugEnabled();
+  }
+
+  @Override
+  public void debug(Marker marker, String msg) {
+    debug(msg);
+  }
+
+  @Override
+  public void debug(Marker marker, String format, Object arg) {
+    debug(format, arg);
+  }
+
+  @Override
+  public void debug(Marker marker, String format, Object arg1, Object arg2) {
+    debug(format, arg1, arg2);
+  }
+
+  @Override
+  public void debug(Marker marker, String format, Object... arguments) {
+    debug(format, arguments);
+  }
+
+  @Override
+  public void debug(Marker marker, String msg, Throwable t) {
+    debug(msg, t);
   }
 
   @Override
@@ -156,6 +225,36 @@ public class YalifSlf4jLogger extends MarkerIgnoringBase {
   }
 
   @Override
+  public boolean isInfoEnabled(Marker marker) {
+    return isInfoEnabled();
+  }
+
+  @Override
+  public void info(Marker marker, String msg) {
+    info(msg);
+  }
+
+  @Override
+  public void info(Marker marker, String format, Object arg) {
+    info(format, arg);
+  }
+
+  @Override
+  public void info(Marker marker, String format, Object arg1, Object arg2) {
+    info(format, arg1, arg2);
+  }
+
+  @Override
+  public void info(Marker marker, String format, Object... arguments) {
+    info(format, arguments);
+  }
+
+  @Override
+  public void info(Marker marker, String msg, Throwable t) {
+    info(msg, t);
+  }
+
+  @Override
   public boolean isWarnEnabled() {
     return !isDisabled(Level.WARN);
   }
@@ -186,6 +285,36 @@ public class YalifSlf4jLogger extends MarkerIgnoringBase {
   }
 
   @Override
+  public boolean isWarnEnabled(Marker marker) {
+    return isWarnEnabled();
+  }
+
+  @Override
+  public void warn(Marker marker, String msg) {
+    warn(msg);
+  }
+
+  @Override
+  public void warn(Marker marker, String format, Object arg) {
+    warn(format, arg);
+  }
+
+  @Override
+  public void warn(Marker marker, String format, Object arg1, Object arg2) {
+    warn(format, arg1, arg2);
+  }
+
+  @Override
+  public void warn(Marker marker, String format, Object... arguments) {
+    warn(format, arguments);
+  }
+
+  @Override
+  public void warn(Marker marker, String msg, Throwable t) {
+    warn(msg, t);
+  }
+
+  @Override
   public boolean isErrorEnabled() {
     return !isDisabled(Level.ERROR);
   }
@@ -213,5 +342,35 @@ public class YalifSlf4jLogger extends MarkerIgnoringBase {
   @Override
   public void error(String s, Throwable throwable) {
     log(Level.ERROR, s, throwable);
+  }
+
+  @Override
+  public boolean isErrorEnabled(Marker marker) {
+    return isErrorEnabled();
+  }
+
+  @Override
+  public void error(Marker marker, String msg) {
+    error(msg);
+  }
+
+  @Override
+  public void error(Marker marker, String format, Object arg) {
+    error(format, arg);
+  }
+
+  @Override
+  public void error(Marker marker, String format, Object arg1, Object arg2) {
+    error(format, arg1, arg2);
+  }
+
+  @Override
+  public void error(Marker marker, String format, Object... arguments) {
+    error(format, arguments);
+  }
+
+  @Override
+  public void error(Marker marker, String msg, Throwable t) {
+    error(msg, t);
   }
 }

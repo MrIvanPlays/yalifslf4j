@@ -26,13 +26,14 @@ import com.mrivanplays.yalifslf4j.YalifSlf4jLoggerFactory;
 import com.mrivanplays.yalifslf4j.config.YalifLogFormatBase;
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 
 public class LoggingTest {
 
   @Test
   public void log() {
-    YalifSlf4jLoggerFactory factory =
+    ILoggerFactory factory =
         new YalifSlf4jLoggerFactory(new YalifLogFormatBase("[%level] %msg", ""));
     Logger logger = factory.getLogger("TestLog");
     logger.info("Hello, world");
