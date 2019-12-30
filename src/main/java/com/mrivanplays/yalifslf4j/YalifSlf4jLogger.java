@@ -23,6 +23,7 @@
 package com.mrivanplays.yalifslf4j;
 
 import com.mrivanplays.yalifslf4j.config.YalifLogFormat;
+import com.mrivanplays.yalifslf4j.utils.YalifPrintStreams;
 import java.util.EnumSet;
 import org.slf4j.Logger;
 import org.slf4j.Marker;
@@ -60,12 +61,10 @@ public class YalifSlf4jLogger implements Logger {
     }
     if (exception != null) {
       String format = logFormatFormatter.getFormattedMessage(level, formattedMesage, exception);
-      System.out.println(format);
+      YalifPrintStreams.DEFAULT_OUT.println(format);
       YalifSlf4jLogFile.add(format);
     } else {
-      String format = logFormatFormatter.getFormattedMessage(level, formattedMesage);
-      System.out.println(format);
-      YalifSlf4jLogFile.add(format);
+      YalifPrintStreams.getPrintStream(level).println(formattedMesage, logFormatFormatter);
     }
   }
 

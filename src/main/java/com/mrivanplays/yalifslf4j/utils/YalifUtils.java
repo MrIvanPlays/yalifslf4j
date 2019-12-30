@@ -23,29 +23,30 @@
 package com.mrivanplays.yalifslf4j.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.OptionalInt;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class YalifUtils {
 
   public static void zip(File file, File logDirectory) {
     String dateFormatted = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-    OptionalInt logNumberOptional = Arrays.stream(logDirectory.listFiles((a, name) -> name.endsWith(".zip")))
-        .mapToInt(zipInDir -> {
-          if (!zipInDir.getName().contains(dateFormatted)) {
-            return 0;
-          }
-          return Integer.parseInt(zipInDir.getName().replace(dateFormatted + "-", "")
-              .replace(".zip", ""));
-        })
-        .max();
+    OptionalInt logNumberOptional =
+        Arrays.stream(logDirectory.listFiles((a, name) -> name.endsWith(".gz")))
+            .mapToInt(
+                zipInDir -> {
+                  if (!zipInDir.getName().contains(dateFormatted)) {
+                    return 0;
+                  }
+                  return Integer.parseInt(
+                      zipInDir.getName().replace(dateFormatted + "-", "").replace(".gz", ""));
+                })
+            .max();
     int logNumber = 1;
     if (logNumberOptional.isPresent()) {
       int logNumberData = logNumberOptional.getAsInt();
@@ -53,18 +54,22 @@ public class YalifUtils {
         logNumber = logNumberData + 1;
       }
     }
-    File zipFile = new File(logDirectory, dateFormatted + "-" + logNumber + ".zip");
+    File gzipFile = new File(logDirectory, dateFormatted + "-" + logNumber + ".log.gz");
     try {
-      zipFile.createNewFile();
+      gzipFile.createNewFile();
     } catch (IOException ex) {
       ex.printStackTrace();
     }
-    try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
-      ZipEntry entry = new ZipEntry(file.getPath());
-      out.putNextEntry(entry);
-      out.write(Files.readAllBytes(file.toPath()));
-    } catch (IOException ex) {
-      ex.printStackTrace();
+    try (GZIPOutputStream out = new GZIPOutputStream(new FileOutputStream(gzipFile))) {
+      try (FileInputStream in = new FileInputStream(file)) {
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = in.read(buffer)) > 0) {
+          out.write(buffer, 0, bytesRead);
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 }

@@ -39,16 +39,15 @@ public class YalifLogFormatBase {
 
   public String getFormattedMessage(Level level, String message) {
     String replacements =
-        format
-            .replace("%level", level.name())
-            .replace("%msg", message)
-            .replace("%loggerName", loggerName)
-            .replace("%n", "");
+        format.replace("%level", level.name()).replace("%msg", message).replace("%n", "");
     if (dateTimeFormat != null) {
       replacements =
           replacements.replace(
               dateTimeFormat,
               LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateTimeFormat)));
+    }
+    if (loggerName != null) {
+      replacements = replacements.replace("%loggerName", loggerName);
     }
     return replacements;
   }

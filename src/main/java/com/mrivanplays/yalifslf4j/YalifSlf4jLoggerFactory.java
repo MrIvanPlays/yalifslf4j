@@ -25,6 +25,7 @@ package com.mrivanplays.yalifslf4j;
 import com.mrivanplays.yalifslf4j.config.YalifLogFormat;
 import com.mrivanplays.yalifslf4j.config.YalifLogFormatBase;
 import com.mrivanplays.yalifslf4j.config.YalifSlf4jConfig;
+import com.mrivanplays.yalifslf4j.utils.YalifPrintStreams;
 import java.io.File;
 import java.io.InputStream;
 import java.security.AccessController;
@@ -72,10 +73,12 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
       throw new IllegalArgumentException("Logging format cannot be null");
     }
     logFormat = new YalifLogFormatBase(config.getLoggingFormat(), config.getTimeDateFormat());
+    YalifPrintStreams.initialize(logFormat);
     disabledLevels = config.getDisabledLevels();
   }
 
   public YalifSlf4jLoggerFactory(YalifLogFormatBase logFormat) { // testing purposes
+    YalifPrintStreams.initialize(logFormat);
     loggerMap = new ConcurrentHashMap<>();
     this.logFormat = logFormat;
     this.disabledLevels = null;
