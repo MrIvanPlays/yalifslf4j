@@ -44,7 +44,7 @@ public class YalifUtils {
                     return 0;
                   }
                   return Integer.parseInt(
-                      zipInDir.getName().replace(dateFormatted + "-", "").replace(".gz", ""));
+                      zipInDir.getName().replace(dateFormatted + "-", "").replace(".gz", "").replace(".log", ""));
                 })
             .max();
     int logNumber = 1;
