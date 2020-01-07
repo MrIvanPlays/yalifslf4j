@@ -82,6 +82,7 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
   public YalifSlf4jLoggerFactory(YalifLogFormatBase logFormat) { // testing purposes
     YalifPrintStreams.initialize(logFormat);
     loggerMap = new ConcurrentHashMap<>();
+    this.fileLogFormat = logFormat;
     this.logFormat = logFormat;
     this.disabledLevels = null;
   }
