@@ -28,9 +28,9 @@ public class YalifPrintStream extends PrintStream {
     super.print(formatted);
   }
 
-  public void println(String s, YalifLogFormat loggerLogFormat) {
+  public void println(String s, YalifLogFormat loggerLogFormat, YalifLogFormat fileLogFormat) {
     String formatted = loggerLogFormat.getFormattedMessage(level, s);
-    YalifSlf4jLogFile.add(formatted);
+    YalifSlf4jLogFile.add(fileLogFormat.getFormattedMessage(level, s));
     String characterizedString = formatted + "formatted";
     super.println(characterizedString);
   }

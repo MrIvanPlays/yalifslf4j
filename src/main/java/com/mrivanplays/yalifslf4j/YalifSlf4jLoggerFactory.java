@@ -41,6 +41,7 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
 
   private Map<String, Logger> loggerMap;
   private YalifLogFormatBase logFormat;
+  private YalifLogFormatBase fileLogFormat;
   private EnumSet<Level> disabledLevels;
 
   public YalifSlf4jLoggerFactory() {
@@ -73,6 +74,7 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
       throw new IllegalArgumentException("Logging format cannot be null");
     }
     logFormat = new YalifLogFormatBase(config.getLoggingFormat(), config.getTimeDateFormat());
+    fileLogFormat = new YalifLogFormatBase(config.getFileLogFormat(), config.getTimeDateFormat());
     YalifPrintStreams.initialize(logFormat);
     disabledLevels = config.getDisabledLevels();
   }
@@ -91,7 +93,11 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
       return logger;
     } else {
       Logger newInstance =
-          new YalifSlf4jLogger(s, new YalifLogFormat(logFormat, s), disabledLevels);
+          new YalifSlf4jLogger(
+              s,
+              new YalifLogFormat(logFormat, s),
+              new YalifLogFormat(fileLogFormat, s),
+              disabledLevels);
       Logger oldInstance = loggerMap.putIfAbsent(s, newInstance);
       return oldInstance == null ? newInstance : oldInstance;
     }

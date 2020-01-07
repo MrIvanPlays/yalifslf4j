@@ -39,7 +39,11 @@ public class YalifLogFormatBase {
 
   public String getFormattedMessage(Level level, String message) {
     String replacements =
-        format.replace("%level", level.name()).replace("%msg", message).replace("%n", "");
+        format
+            .replace("%level", level.name())
+            .replace("%msg", message)
+            .replace("%n", "")
+            .replace("%threadName", Thread.currentThread().getName());
     if (dateTimeFormat != null) {
       replacements =
           replacements.replace(
@@ -53,13 +57,22 @@ public class YalifLogFormatBase {
   }
 
   public String getFormattedMessage(Level level, String message, Throwable error) {
-    return format
-            .replace("%level", level.name())
-            .replace("%msg", message)
-            .replace("%loggerName", loggerName)
-            .replace("%n", "")
-        + "\n"
-        + exception(error);
+    String currentFormat =
+        format
+                .replace("%level", level.name())
+                .replace("%msg", message)
+                .replace("%loggerName", loggerName)
+                .replace("%threadName", Thread.currentThread().getName())
+                .replace("%n", "")
+            + "\n"
+            + exception(error);
+    if (dateTimeFormat != null) {
+      currentFormat =
+          currentFormat.replace(
+              dateTimeFormat,
+              LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateTimeFormat)));
+    }
+    return currentFormat;
   }
 
   private String exception(Throwable exception) {

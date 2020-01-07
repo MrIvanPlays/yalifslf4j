@@ -39,6 +39,7 @@ public class YalifSlf4jConfig {
   private String loggingFormat;
   private String fileLoggingDirectory;
   private String timeDateFormat;
+  private String fileLogFormat;
   private EnumSet<Level> disabledLevels;
 
   public YalifSlf4jConfig(InputStream in) {
@@ -59,6 +60,12 @@ public class YalifSlf4jConfig {
       loggingFormat = object.getString("loggingFormat");
       fileLoggingDirectory = object.getString("logFileDirectory");
       timeDateFormat = object.getString("timeDateFormat");
+      String fileLogFormatFromObject = object.getString("fileLogFormat");
+      if (fileLogFormatFromObject == null) {
+        fileLogFormat = loggingFormat;
+      } else {
+        fileLogFormat = fileLogFormatFromObject;
+      }
       JSONArray disabledLevelsArray = object.getJSONArray("disabledLevels");
       if (disabledLevelsArray != null) {
         disabledLevels = EnumSet.noneOf(Level.class);
@@ -90,5 +97,9 @@ public class YalifSlf4jConfig {
 
   public EnumSet<Level> getDisabledLevels() {
     return disabledLevels;
+  }
+
+  public String getFileLogFormat() {
+    return fileLogFormat;
   }
 }

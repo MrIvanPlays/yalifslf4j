@@ -36,10 +36,16 @@ public class YalifSlf4jLogger implements Logger {
 
   private EnumSet<Level> disabledLevels;
   private YalifLogFormat logFormatFormatter;
+  private YalifLogFormat fileLogFormat;
   private String name;
 
-  public YalifSlf4jLogger(String name, YalifLogFormat format, EnumSet<Level> disabledLevels) {
+  public YalifSlf4jLogger(
+      String name,
+      YalifLogFormat format,
+      YalifLogFormat fileLogFormat,
+      EnumSet<Level> disabledLevels) {
     logFormatFormatter = format;
+    this.fileLogFormat = fileLogFormat;
     this.disabledLevels = disabledLevels;
     this.name = name;
   }
@@ -62,9 +68,10 @@ public class YalifSlf4jLogger implements Logger {
     if (exception != null) {
       String format = logFormatFormatter.getFormattedMessage(level, formattedMesage, exception);
       YalifPrintStreams.DEFAULT_OUT.println(format);
-      YalifSlf4jLogFile.add(format);
+      YalifSlf4jLogFile.add(fileLogFormat.getFormattedMessage(level, formattedMesage, exception));
     } else {
-      YalifPrintStreams.getPrintStream(level).println(formattedMesage, logFormatFormatter);
+      YalifPrintStreams.getPrintStream(level)
+          .println(formattedMesage, logFormatFormatter, fileLogFormat);
     }
   }
 
