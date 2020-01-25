@@ -22,16 +22,16 @@
 */
 package com.mrivanplays.yalifslf4j.config;
 
+import com.mrivanplays.yalifslf4j.config.reader.YalifConfigReader;
+import com.mrivanplays.yalifslf4j.config.reader.YalifConfigReaderProvider;
+import com.mrivanplays.yalifslf4j.config.reader.YalifJsonObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.stream.Collectors;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.event.Level;
 
 public class YalifSlf4jConfig {
@@ -43,34 +43,18 @@ public class YalifSlf4jConfig {
   private EnumSet<Level> disabledLevels;
 
   public YalifSlf4jConfig(InputStream in) {
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-      List<String> lines = reader.lines().collect(Collectors.toList());
-      JSONObject object;
-      if (lines.size() == 1) {
-        object = new JSONObject(lines.get(0));
-      } else {
-        // pretty printing
-        StringBuilder beanBuilder = new StringBuilder();
-        for (String line : lines) {
-          beanBuilder.append(line);
-        }
-        object = new JSONObject(beanBuilder.toString());
-      }
-      lines.clear();
+    try (BufferedReader reader =
+        new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+      YalifConfigReader configReader = YalifConfigReaderProvider.getInstance();
+      YalifJsonObject object = configReader.read(reader);
       loggingFormat = object.getString("loggingFormat");
       fileLoggingDirectory = object.getString("logFileDirectory");
       timeDateFormat = object.getString("timeDateFormat");
-      String fileLogFormatFromObject = object.getString("fileLogFormat");
-      if (fileLogFormatFromObject == null) {
-        fileLogFormat = loggingFormat;
-      } else {
-        fileLogFormat = fileLogFormatFromObject;
-      }
-      JSONArray disabledLevelsArray = object.getJSONArray("disabledLevels");
+      fileLogFormat = object.getString("fileLogFormat");
+      List<String> disabledLevelsArray = object.getStringJsonArrayAsList("disabledLevels");
       if (disabledLevelsArray != null) {
         disabledLevels = EnumSet.noneOf(Level.class);
-        for (int i = 0; i < disabledLevelsArray.length(); i++) {
-          String level = disabledLevelsArray.getString(i);
+        for (String level : disabledLevelsArray) {
           try {
             Level slf4jLevel = Level.valueOf(level.toUpperCase());
             disabledLevels.add(slf4jLevel);
@@ -79,7 +63,7 @@ public class YalifSlf4jConfig {
           }
         }
       }
-    } catch (IOException | JSONException ignored) {
+    } catch (IOException ignored) {
     }
   }
 

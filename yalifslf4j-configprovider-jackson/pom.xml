@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>yalifslf4j-parent</artifactId>
+    <groupId>com.mrivanplays</groupId>
+    <version>dev-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>yalifslf4j-configprovider-jackson</artifactId>
+  <version>1.0.3-SNAPSHOT</version>
+
+  <name>Yalifslf4j-ConfigProvider-Jackson</name>
+  <description>Jackson config reader for yalifslf4j</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.mrivanplays</groupId>
+      <artifactId>yalifslf4j-base</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.10.1</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
+
+</project>

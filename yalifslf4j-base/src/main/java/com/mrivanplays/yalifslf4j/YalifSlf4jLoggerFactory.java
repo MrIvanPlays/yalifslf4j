@@ -74,7 +74,12 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
       throw new IllegalArgumentException("Logging format cannot be null");
     }
     logFormat = new YalifLogFormatBase(config.getLoggingFormat(), config.getTimeDateFormat());
-    fileLogFormat = new YalifLogFormatBase(config.getFileLogFormat(), config.getTimeDateFormat());
+    String fileLogFormatFromConfig = config.getFileLogFormat();
+    if (fileLogFormatFromConfig != null) {
+      fileLogFormat = new YalifLogFormatBase(fileLogFormatFromConfig, config.getTimeDateFormat());
+    } else {
+      fileLogFormat = logFormat;
+    }
     YalifPrintStreams.initialize(logFormat);
     disabledLevels = config.getDisabledLevels();
   }

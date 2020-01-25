@@ -5,8 +5,15 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.mrivanplays</groupId>
-  <artifactId>yalifslf4j</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <artifactId>yalifslf4j-parent</artifactId>
+  <version>dev-SNAPSHOT</version>
+  <modules>
+    <module>yalifslf4j-base</module>
+    <module>yalifslf4j-configprovider-orgjson</module>
+    <module>yalifslf4j-configprovider-hjson</module>
+    <module>yalifslf4j-configprovider-jackson</module>
+  </modules>
+  <packaging>pom</packaging>
 
   <description>Yet another logger implementation for slf4j</description>
 
@@ -28,16 +35,6 @@
   </distributionManagement>
 
   <dependencies>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>2.0.0-alpha1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.json</groupId>
-      <artifactId>json</artifactId>
-      <version>20190722</version>
-    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
