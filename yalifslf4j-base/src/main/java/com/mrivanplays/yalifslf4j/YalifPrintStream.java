@@ -28,6 +28,11 @@ public class YalifPrintStream extends PrintStream {
     super.print(formatted);
   }
 
+  @Override
+  public void print(Object obj) {
+    print(String.valueOf(obj));
+  }
+
   public void println(String s, YalifLogFormat loggerLogFormat, YalifLogFormat fileLogFormat) {
     String formatted = loggerLogFormat.getFormattedMessage(level, s);
     YalifSlf4jLogFile.add(fileLogFormat.getFormattedMessage(level, s));
