@@ -1,0 +1,11 @@
+{
+  "loggingFormat": "Program's normal logging format e.g [{HH:mm:ss} %level] [%loggerName] %msg",
+  "logFileDirectory": "Logging directory path e.g ./logs",
+  "timeTimeZone": "Time zone of the time logged e.g Europe/Sofia",
+  "fileLogFormat": "Program's file logging format. Isn't required tho. Example: [{dd/MM/yyyy HH:mm:ss} %threadName/%level] [%loggerName] %msg",
+  "disabledLevels": [
+    "disabled levels come here e.g",
+    "debug",
+    "trace"
+  ]
+}

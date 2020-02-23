@@ -70,7 +70,6 @@ public class YalifLogFormatBase {
         format
                 .replace("%level", level.name())
                 .replace("%msg", message)
-                .replace("%loggerName", loggerName)
                 .replace("%threadName", Thread.currentThread().getName())
                 .replace("%n", "")
             + "\n"
@@ -80,6 +79,9 @@ public class YalifLogFormatBase {
           currentFormat.replace(
               "\\{" + dateTimeFormat + "\\}",
               LocalDateTime.now(timeTimeZone).format(DateTimeFormatter.ofPattern(dateTimeFormat)));
+    }
+    if (loggerName != null) {
+      currentFormat = currentFormat.replace("%loggerName", loggerName);
     }
     return currentFormat;
   }
