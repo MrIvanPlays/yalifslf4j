@@ -27,6 +27,7 @@ public class JacksonJsonObject implements YalifJsonObject {
 
   @Override
   public String getString(String member) {
-    return parent.get(member).asText();
+    JsonNode node = parent.get(member);
+    return node == null ? null : node.asText();
   }
 }

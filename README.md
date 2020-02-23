@@ -53,16 +53,22 @@ dependencies {
 ```
 
 ## Configuration
-Configuration example can be found [here](https://github.com/MrIvanPlays/api.mrivanplays.com/blob/master/src/main/resources/yalif.json)
+Config file should be called "yalif.json".
+Example config: https://github.com/MrIvanPlays/yalifslf4j/blob/master/config.example.json
 
 Format placeholders: `%loggerName` - logger name ; `%level` - level name ; `%msg` - message ; `%threadName` - current thread name
 
 Not required things in the configuration: 
 
 `logFileDirectory` - log files won't be generated if this isn't present ; 
-`timeDateFormat` - if you have a time date format into your logging format, then it won't be replaced if this isn't present ; 
+`timeTimeZone` - change the time zone of the logged time
 `fileLogFormat` - if you want a custom logging format for your files, this is the variable to go with ;
 `disabledLevels` - all logging levels are being allowed if this isn't present
+
+### Date & Time patterns
+You can make yalifslf4j replace the current time by making it replace it.
+You should include a standard java DateTimeFormatter into a `{}`. 
+Example filer format: `[{HH:mm:ss} %level] [%loggerName] %msg`
 
 
 ## Usage
