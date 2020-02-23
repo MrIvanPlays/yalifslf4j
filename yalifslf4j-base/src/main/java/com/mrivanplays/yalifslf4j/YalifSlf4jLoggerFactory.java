@@ -30,6 +30,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.time.ZoneId;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,10 +74,17 @@ public class YalifSlf4jLoggerFactory implements ILoggerFactory {
     if (config.getLoggingFormat() == null) {
       throw new IllegalArgumentException("Logging format cannot be null");
     }
-    logFormat = new YalifLogFormatBase(config.getLoggingFormat(), config.getTimeDateFormat());
+    String timeTimeZone = config.getTimeTimeZone();
+    ZoneId timeTimeZoneIdObject;
+    if (timeTimeZone == null) {
+      timeTimeZoneIdObject = ZoneId.systemDefault();
+    } else {
+      timeTimeZoneIdObject = ZoneId.of(timeTimeZone);
+    }
+    logFormat = new YalifLogFormatBase(config.getLoggingFormat(), timeTimeZoneIdObject);
     String fileLogFormatFromConfig = config.getFileLogFormat();
     if (fileLogFormatFromConfig != null) {
-      fileLogFormat = new YalifLogFormatBase(fileLogFormatFromConfig, config.getTimeDateFormat());
+      fileLogFormat = new YalifLogFormatBase(fileLogFormatFromConfig, timeTimeZoneIdObject);
     } else {
       fileLogFormat = logFormat;
     }

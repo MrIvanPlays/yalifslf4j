@@ -67,7 +67,7 @@ public class YalifSlf4jLogger implements Logger {
     }
     if (exception != null) {
       String format = logFormatFormatter.getFormattedMessage(level, formattedMesage, exception);
-      YalifPrintStreams.DEFAULT_OUT.println(format);
+      YalifPrintStreams.ERROR.println(format);
       YalifSlf4jLogFile.add(fileLogFormat.getFormattedMessage(level, formattedMesage, exception));
     } else {
       YalifPrintStreams.getPrintStream(level)

@@ -25,7 +25,7 @@ package com.mrivanplays.yalifslf4j.config;
 public class YalifLogFormat extends YalifLogFormatBase {
 
   public YalifLogFormat(YalifLogFormatBase base, String name) {
-    super(base.format, base.dateTimeFormat);
+    super(base.format, base.timeTimeZone);
     this.loggerName = name;
   }
 }

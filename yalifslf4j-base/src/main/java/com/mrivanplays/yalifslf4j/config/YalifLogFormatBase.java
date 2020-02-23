@@ -23,18 +23,27 @@
 package com.mrivanplays.yalifslf4j.config;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.slf4j.event.Level;
 
 public class YalifLogFormatBase {
 
   String format;
+  ZoneId timeTimeZone;
   String dateTimeFormat;
   String loggerName;
 
-  public YalifLogFormatBase(String format, String dateTimeFormat) {
+  public YalifLogFormatBase(String format, ZoneId timeTimeZone) {
     this.format = format;
-    this.dateTimeFormat = dateTimeFormat;
+    this.timeTimeZone = timeTimeZone;
+    Pattern pattern = Pattern.compile("\\{.*?\\}");
+    Matcher matcher = pattern.matcher(format);
+    if (matcher.find()) {
+      this.dateTimeFormat = matcher.group().subSequence(1, matcher.group().length() - 1).toString();
+    }
   }
 
   public String getFormattedMessage(Level level, String message) {
@@ -47,8 +56,8 @@ public class YalifLogFormatBase {
     if (dateTimeFormat != null) {
       replacements =
           replacements.replace(
-              dateTimeFormat,
-              LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateTimeFormat)));
+              "{" + dateTimeFormat + "}",
+              LocalDateTime.now(timeTimeZone).format(DateTimeFormatter.ofPattern(dateTimeFormat)));
     }
     if (loggerName != null) {
       replacements = replacements.replace("%loggerName", loggerName);
@@ -69,8 +78,8 @@ public class YalifLogFormatBase {
     if (dateTimeFormat != null) {
       currentFormat =
           currentFormat.replace(
-              dateTimeFormat,
-              LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateTimeFormat)));
+              "\\{" + dateTimeFormat + "\\}",
+              LocalDateTime.now(timeTimeZone).format(DateTimeFormatter.ofPattern(dateTimeFormat)));
     }
     return currentFormat;
   }

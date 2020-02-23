@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>yalifslf4j-configprovider-jackson</artifactId>
-  <version>1.0.3-SNAPSHOT</version>
+  <version>1.0.4-SNAPSHOT</version>
 
   <name>Yalifslf4j-ConfigProvider-Jackson</name>
   <description>Jackson config reader for yalifslf4j</description>

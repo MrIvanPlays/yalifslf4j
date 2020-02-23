@@ -25,6 +25,7 @@ package com.mrivanplays.yaslif4j;
 import com.mrivanplays.yalifslf4j.YalifSlf4jLoggerFactory;
 import com.mrivanplays.yalifslf4j.config.YalifLogFormatBase;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.ILoggerFactory;
@@ -35,7 +36,8 @@ public class LoggingTest {
   @Test
   public void log() {
     ILoggerFactory factory =
-        new YalifSlf4jLoggerFactory(new YalifLogFormatBase("[%level] %msg", ""));
+        new YalifSlf4jLoggerFactory(
+            new YalifLogFormatBase("[{HH:mm:ss}] [%level] %msg", ZoneId.systemDefault()));
     Logger logger = factory.getLogger("TestLog");
     logger.info("Hello, world");
 
